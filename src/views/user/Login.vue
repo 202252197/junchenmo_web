@@ -7,12 +7,12 @@
       :form="form"
       @submit="handleSubmit"
     >
-      <a-tabs
+      <!-- <a-tabs
         :activeKey="customActiveKey"
         :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
         @change="handleTabClick"
       >
-        <a-tab-pane key="tab1" :tab="$t('user.login.tab-login-credentials')">
+        <a-tab-pane key="tab1" :tab="$t('user.login.tab-login-credentials')"> -->
           <a-alert v-if="isLoginError" type="error" showIcon style="margin-bottom: 24px;" :message="$t('user.login.message-invalid-credentials')" />
           <a-form-item>
             <a-input
@@ -40,8 +40,9 @@
               <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
             </a-input-password>
           </a-form-item>
-        </a-tab-pane>
-        <a-tab-pane key="tab2" :tab="$t('user.login.tab-login-mobile')">
+        <!-- </a-tab-pane> -->
+        <!--手机号登陆-->
+        <!-- <a-tab-pane key="tab2" :tab="$t('user.login.tab-login-mobile')">
           <a-form-item>
             <a-input size="large" type="text" :placeholder="$t('user.login.mobile.placeholder')" v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: $t('user.login.mobile.placeholder') }], validateTrigger: 'change'}]">
               <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
@@ -66,17 +67,18 @@
               ></a-button>
             </a-col>
           </a-row>
-        </a-tab-pane>
-      </a-tabs>
+        </a-tab-pane> -->
+      <!-- </a-tabs> -->
 
-      <a-form-item>
+       <!--自动登陆以及记住密码-->
+      <!-- <a-form-item>
         <a-checkbox v-decorator="['rememberMe', { valuePropName: 'checked' }]">{{ $t('user.login.remember-me') }}</a-checkbox>
         <router-link
           :to="{ name: 'recover', params: { user: 'aaa'} }"
           class="forge-password"
           style="float: right;"
         >{{ $t('user.login.forgot-password') }}</router-link>
-      </a-form-item>
+      </a-form-item> -->
 
       <a-form-item style="margin-top:24px">
         <a-button
@@ -89,8 +91,9 @@
         >{{ $t('user.login.login') }}</a-button>
       </a-form-item>
 
+      <!--其他登陆方式以及注册路由-->
       <div class="user-login-other">
-        <span>{{ $t('user.login.sign-in-with') }}</span>
+        <!-- <span>{{ $t('user.login.sign-in-with') }}</span>
         <a>
           <a-icon class="item-icon" type="alipay-circle"></a-icon>
         </a>
@@ -99,7 +102,7 @@
         </a>
         <a>
           <a-icon class="item-icon" type="weibo-circle"></a-icon>
-        </a>
+        </a> -->
         <router-link class="register" :to="{ name: 'register' }">{{ $t('user.login.signup') }}</router-link>
       </div>
     </a-form>
@@ -114,7 +117,7 @@
 </template>
 
 <script>
-import md5 from 'md5'
+// import md5 from 'md5'
 import TwoStepCaptcha from '@/components/tools/TwoStepCaptcha'
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
@@ -171,6 +174,8 @@ export default {
       // this.form.resetFields()
     },
     handleSubmit (e) {
+      console.log(e)
+      // 阻止提交
       e.preventDefault()
       const {
         form: { validateFields },
@@ -188,8 +193,9 @@ export default {
           console.log('login form', values)
           const loginParams = { ...values }
           delete loginParams.username
-          loginParams[!state.loginType ? 'email' : 'username'] = values.username
-          loginParams.password = md5(values.password)
+          // 如果是邮箱登陆就传email,如果是用户名的话就传userName
+          loginParams[!state.loginType ? 'email' : 'userName'] = values.username
+          // loginParams.password = md5(values.password)
           Login(loginParams)
             .then((res) => this.loginSuccess(res))
             .catch(err => this.requestFailed(err))
@@ -270,12 +276,14 @@ export default {
       this.isLoginError = false
     },
     requestFailed (err) {
+      console.log('啊哈登陆失败')
+      console.log(err)
       this.isLoginError = true
-      this.$notification['error']({
-        message: '错误',
-        description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
-        duration: 4
-      })
+      // this.$notification['error']({
+      //   message: '错误',
+      //   description: ((err.data || {}).data || {}).message || '请求出现错误，请稍后再试',
+      //   duration: 4
+      // })
     }
   }
 }

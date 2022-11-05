@@ -10,7 +10,7 @@
           <div class="header">
             <a href="/">
               <img src="~@/assets/logo.svg" class="logo" alt="logo">
-              <span class="title">Ant Design</span>
+              <span class="title">君尘陌</span>
             </a>
           </div>
           <div class="desc">
@@ -21,13 +21,13 @@
         <router-view />
 
         <div class="footer">
-          <div class="links">
+          <!-- <div class="links">
             <a href="_self">帮助</a>
             <a href="_self">隐私</a>
             <a href="_self">条款</a>
-          </div>
+          </div> -->
           <div class="copyright">
-            Copyright &copy; 2018 vueComponent
+            Copyright &copy; 2022 lvshihao
           </div>
         </div>
       </div>
@@ -116,8 +116,9 @@ export default {
           .logo {
             height: 44px;
             vertical-align: top;
-            margin-right: 16px;
             border-style: none;
+            margin-right: 0px;
+            padding-top: 5px;
           }
 
           .title {
