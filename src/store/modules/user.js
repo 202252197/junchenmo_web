@@ -39,10 +39,16 @@ const user = {
     Login ({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
-          const result = response.data
-          storage.set(ACCESS_TOKEN, result.token, new Date().getTime() + 7 * 24 * 60 * 60 * 1000)
-          commit('SET_TOKEN', result.token)
-          resolve()
+          // 判断如果状态是2001代表登陆成功返回token，否则返回失败原因
+          if (response.code === 2001) {
+            const token = response.data.token
+            storage.set(ACCESS_TOKEN, token, new Date().getTime() + 7 * 24 * 60 * 60 * 1000)
+            commit('SET_TOKEN', token)
+            resolve()
+          } else {
+            const message = response.message
+            reject(message)
+          }
         }).catch(error => {
           reject(error)
         })
