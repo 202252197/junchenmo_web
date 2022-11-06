@@ -44,7 +44,7 @@ const user = {
             const token = response.data.token
             storage.set(ACCESS_TOKEN, token, new Date().getTime() + 7 * 24 * 60 * 60 * 1000)
             commit('SET_TOKEN', token)
-            resolve()
+            resolve("登陆成功")
           } else {
             const message = response.message
             reject(message)
@@ -60,7 +60,7 @@ const user = {
       return new Promise((resolve, reject) => {
         // 请求后端获取用户信息 /api/user/info
         getInfo().then(response => {
-          const { result } = response
+          const { data:result } = response
           if (result.role && result.role.permissions.length > 0) {
             const role = { ...result.role }
             role.permissions = result.role.permissions.map(permission => {

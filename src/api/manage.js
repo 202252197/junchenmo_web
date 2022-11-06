@@ -4,7 +4,7 @@ const api = {
   user: '/user',
   role: '/role',
   service: '/service',
-  permission: '/permission',
+  // permission: '/permission',
   permissionNoPager: '/permission/no-pager',
   orgTree: '/org/tree'
 }
